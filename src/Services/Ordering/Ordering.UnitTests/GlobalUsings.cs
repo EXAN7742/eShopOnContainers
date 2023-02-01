@@ -12,7 +12,7 @@ global using Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure.Se
 global using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
 global using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.OrderAggregate;
 global using System.Threading;
-global using global::Ordering.API.Application.IntegrationEvents;
+global using global::Microsoft.eShopOnContainers.Services.Ordering.API.Application.IntegrationEvents;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.eShopOnContainers.Services.Ordering.API.Application.Queries;
 global using Microsoft.eShopOnContainers.Services.Ordering.API.Controllers;

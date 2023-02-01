@@ -19,6 +19,7 @@ public class OrderQueries
         var result = await connection.QueryAsync<dynamic>(
             @"select o.[Id] as ordernumber,o.OrderDate as date, o.Description as description,
                     o.Address_City as city, o.Address_Country as country, o.Address_State as state, o.Address_Street as street, o.Address_ZipCode as zipcode,
+                    o.DiscountCode as coupon,o.Discount as discount,
                     os.Name as status, 
                     oi.ProductName as productname, oi.Units as units, oi.UnitPrice as unitprice, oi.PictureUrl as pictureurl
                     FROM ordering.Orders o
@@ -70,6 +71,8 @@ public class OrderQueries
             zipcode = result[0].zipcode,
             country = result[0].country,
             orderitems = new List<Orderitem>(),
+            coupon = result[0].coupon,
+            discount = result[0].discount ?? 0m,
             total = 0
         };
 

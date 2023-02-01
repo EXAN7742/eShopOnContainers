@@ -55,6 +55,12 @@ public class CreateOrderCommand
     public int CardTypeId { get; private set; }
 
     [DataMember]
+    public string CodeDiscount { get; private set; }
+
+    [DataMember]
+    public decimal Discount { get; private set; }
+
+    [DataMember]
     public IEnumerable<OrderItemDTO> OrderItems => _orderItems;
 
     public CreateOrderCommand()
