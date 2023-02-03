@@ -24,7 +24,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
         {
             _logger.LogInformation("Call coupon api with codenumber: {codeNumber}", codeNumber);
 
-            var url = new Uri($"{_urls.Catalog}/api/v1/coupon/{codeNumber}");
+            var url = new Uri($"{_urls.Coupon}/api/v1/coupon/{codeNumber}");
 
             var response = await _httpClient.GetAsync(url);
 
