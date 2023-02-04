@@ -27,6 +27,7 @@
         public static IServiceCollection AddCouponRegister(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<ICouponRepository, CouponRepository>()
+                .AddTransient<IBenefitPointsRepository, BenefitPointsRepository>()
                 .AddTransient<IServiceBusPersisterConnection, DefaultServiceBusPersisterConnection>(service =>
                 {
                     var serviceBusConnectionString = configuration["EventBusConnection"];
