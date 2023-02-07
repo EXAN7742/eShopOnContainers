@@ -59,6 +59,10 @@ env:
       key: internalurls__grpcOrdering
     - name: IdentityUrlExternal
       key: urls__IdentityUrlExternal
+    - name: urls__coupon
+      key: internalurls__coupon
+    - name: CouponUrlHC
+      key: internalurls__coupon__hc
 
       # values define environment variables with a fixed value (no configmap involved) (name is name of var, and value is its value)
   values:

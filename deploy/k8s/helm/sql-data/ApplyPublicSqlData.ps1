@@ -1,0 +1,1 @@
+kubectl apply -f public-sql-data.yaml

@@ -1,7 +1,7 @@
 Param(
-    [parameter(Mandatory=$false)][string]$registry,
-    [parameter(Mandatory=$false)][string]$dockerUser,
-    [parameter(Mandatory=$false)][string]$dockerPassword,
+    [parameter(Mandatory=$false)][string]$registry = "eshopmy01acr.azurecr.io",
+    [parameter(Mandatory=$false)][string]$dockerUser = "eShopMy01ACR",
+    [parameter(Mandatory=$false)][string]$dockerPassword = "agnWP89EPiZ7i1vzwGJ2Nqn2AqjedaN/esoQFrXI6W+ACRCK1Gsc",
     [parameter(Mandatory=$false)][string]$externalDns,
     [parameter(Mandatory=$false)][string]$appName="eshop",
     [parameter(Mandatory=$false)][bool]$deployInfrastructure=$true,
@@ -119,7 +119,7 @@ if (-not [string]::IsNullOrEmpty($registry)) {
 Write-Host "Begin eShopOnContainers installation using Helm" -ForegroundColor Green
 
 $infras = ("sql-data", "nosql-data", "rabbitmq", "keystore-data", "basket-data")
-$charts = ("eshop-common", "basket-api","catalog-api", "identity-api", "mobileshoppingagg","ordering-api","ordering-backgroundtasks","ordering-signalrhub", "payment-api", "webmvc", "webshoppingagg", "webspa", "webstatus", "webhooks-api", "webhooks-web")
+$charts = ("eshop-common", "basket-api","catalog-api", "identity-api", "mobileshoppingagg","ordering-api","ordering-backgroundtasks","ordering-signalrhub", "payment-api", "webmvc", "webshoppingagg", "webspa", "webstatus", "webhooks-api", "webhooks-web", "coupon-api")
 $gateways = ("apigwms", "apigwws")
 
 if ($deployInfrastructure) {

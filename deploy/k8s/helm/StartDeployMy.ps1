@@ -1,0 +1,1 @@
+.\deploy-all.ps1 -externalDns aks -aksName eShopAKS -aksRg eShopAKS -imageTag linux-latest -registry eshopmy01acr.azurecr.io -dockerUser eShopMy01ACR -dockerPassword agnWP89EPiZ7i1vzwGJ2Nqn2AqjedaN/esoQFrXI6W+ACRCK1Gsc -useMesh $false
