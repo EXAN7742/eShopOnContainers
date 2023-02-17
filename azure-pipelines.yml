@@ -4,10 +4,14 @@
 # https://aka.ms/yaml
 
 trigger:
-- dev
+- Deploy
 
 pool:
   vmImage: ubuntu-latest
+
+variables:
+  azureContainerRegistry: '{"loginServer":"eshopmy01acr.azurecr.io", "id" : "/subscriptions/58dcbdb3-5925-4942-8bf3-c9049c2435e4/resourceGroups/eShop/providers/Microsoft.ContainerRegistry/registries/eShopMy01ACR"}'
+  azureSubscriptionEndpoint: 'Visual Studio Professional Subscription (58dcbdb3-5925-4942-8bf3-c9049c2435e4)'
 
 steps:
 - script: echo Hello, world!
@@ -21,7 +25,15 @@ steps:
 - task: DockerCompose@0
   inputs:
     containerregistrytype: 'Azure Container Registry'
-    azureSubscription: 'Visual Studio Professional Subscription (58dcbdb3-5925-4942-8bf3-c9049c2435e4)'
-    azureContainerRegistry: '{"loginServer":"eshopmy01acr.azurecr.io", "id" : "/subscriptions/58dcbdb3-5925-4942-8bf3-c9049c2435e4/resourceGroups/eShop/providers/Microsoft.ContainerRegistry/registries/eShopMy01ACR"}'
+    azureSubscription: $(azureSubscriptionEndpoint)
+    azureContainerRegistry: $(azureContainerRegistry)
     dockerComposeFile: '**/docker-compose.yml'
-    action: 'Run a Docker Compose command'
+    action: Build services
+
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Azure Container Registry'
+    azureSubscription: $(azureSubscriptionEndpoint)
+    azureContainerRegistry: $(azureContainerRegistry)
+    dockerComposeFile: '**/docker-compose.yml'
+    action: Push services
