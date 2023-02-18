@@ -14,7 +14,7 @@ variables:
   azureSubscriptionEndpoint: 'Visual Studio Professional Subscription (58dcbdb3-5925-4942-8bf3-c9049c2435e4)'
 
 steps:
-- script: eShopOnContainersBuildAndDeploy
+- script: echo eShopOnContainersBuildAndDeploy
   displayName: 'eShopOnContainersBuildAndDeploy'
 
 - script: |
