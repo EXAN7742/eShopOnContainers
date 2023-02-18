@@ -14,8 +14,8 @@ variables:
   azureSubscriptionEndpoint: 'Visual Studio Professional Subscription (58dcbdb3-5925-4942-8bf3-c9049c2435e4)'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- script: eShopOnContainersBuildAndDeploy
+  displayName: 'eShopOnContainersBuildAndDeploy'
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
@@ -37,3 +37,16 @@ steps:
     azureContainerRegistry: $(azureContainerRegistry)
     dockerComposeFile: '**/docker-compose.yml'
     action: Push services
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/deploy/k8s/helm'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/deploy/k8s/helm'
+    OverWrite: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/deploy/k8s/helm'
+    ArtifactName: 'helm'
+    publishLocation: 'Container'
