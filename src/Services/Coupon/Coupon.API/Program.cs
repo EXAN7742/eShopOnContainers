@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using Coupon.API.Extensions;
 using Coupon.API.Infrastructure;
 using Coupon.API.Infrastructure.Repositories;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -20,9 +21,10 @@ namespace Coupon.API
                 .SubscribersIntegrationEvents()
                 .Run();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+        public static IWebHostBuilder CreateHostBuilder(string[] args) =>
+            //Host.CreateDefaultBuilder(args)
+            WebHost.CreateDefaultBuilder(args)
+                //.UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureAppConfiguration((host, builder) =>
                 {
                     builder.SetBasePath(Directory.GetCurrentDirectory())
@@ -37,7 +39,9 @@ namespace Coupon.API
                         builder.AddAzureKeyVault($"https://{config["Vault:Name"]}.vault.azure.net/", config["Vault:ClientId"], config["Vault:ClientSecret"]);
                     }
                 })
-                .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
+                //.ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
+                .UseStartup<Startup>()
+                .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseSerilog((host, builder) =>
                 {
                     builder.MinimumLevel.Verbose()

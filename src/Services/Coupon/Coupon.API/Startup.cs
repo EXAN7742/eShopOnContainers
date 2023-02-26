@@ -1,3 +1,5 @@
+using Autofac.Extensions.DependencyInjection;
+using Autofac;
 using Coupon.API.Extensions;
 using Coupon.API.Filters;
 using Coupon.API.IntegrationEvents.EventHandlers;
@@ -11,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using System;
+using Coupon.API.Controllers;
 
 namespace Coupon.API
 {
@@ -23,9 +27,12 @@ namespace Coupon.API
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public virtual IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(options => options.Filters.Add<ValidateModelAttribute>());
+            services.AddControllers(options => options.Filters.Add<ValidateModelAttribute>())
+                // Added for functional tests
+                .AddApplicationPart(typeof(CouponController).Assembly)
+                .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true); ;
 
             services.AddCustomSettings(Configuration)
                 .AddCouponRegister(Configuration)
@@ -39,6 +46,11 @@ namespace Coupon.API
 
             services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToAwaitingCouponValidationIntegrationEvent>, OrderStatusChangedToAwaitingCouponValidationIntegrationEventHandler>();
             services.AddTransient<IIntegrationEventHandler<OrderStatusChangedToCancelledIntegrationEvent>, OrderStatusChangedToCancelledIntegrationEventHandler>();
+
+            var container = new ContainerBuilder();
+            container.Populate(services);
+
+            return new AutofacServiceProvider(container.Build());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -55,19 +67,19 @@ namespace Coupon.API
                 app.UsePathBase(pathBase);
             }
 
-            app.UseSwagger()
-                .UseSwaggerUI(options =>
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Coupon.API V1");
+                    options.SwaggerEndpoint($"{(!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty)}/swagger/v1/swagger.json", "Coupon.API V1");
                     options.OAuthClientId("couponswaggerui");
                     options.OAuthAppName("eShop-Learn.Coupon.API Swagger UI");
-                })
-                .UseCors("CorsPolicy")
-                .UseRouting()
-                .UseAuthentication()
-                .UseAuthorization()
-                .UseEndpoints(endpoints =>
+                });
+            app.UseCors("CorsPolicy");
+            app.UseRouting();
+            ConfigureAuth(app);
+            app.UseEndpoints(endpoints =>
                 {
+                    endpoints.MapDefaultControllerRoute();
                     endpoints.MapControllers();
                     endpoints.MapHealthChecks("/hc", new HealthCheckOptions
                     {
@@ -82,6 +94,12 @@ namespace Coupon.API
                 });
 
             ConfigureEventBus(app);
+        }
+
+        protected virtual void ConfigureAuth(IApplicationBuilder app)
+        {
+            app.UseAuthentication();
+            app.UseAuthorization();
         }
 
         private void ConfigureEventBus(IApplicationBuilder app)
