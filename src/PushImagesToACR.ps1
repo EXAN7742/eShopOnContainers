@@ -1,3 +1,5 @@
+docker login eshopmy01acr.azurecr.io -u eshopmy01acr -p uTm+KqMXgKBI6h+/d8f26/i6OhH4vviu5IbbLw1U6f+ACRCJab05
+
 docker tag eshop/webhooks.client:linux-latest eshopmy01acr.azurecr.io/eshop/webhooks.client:linux-latest
 docker tag eshop/basket.api:linux-latest eshopmy01acr.azurecr.io/eshop/basket.api:linux-latest
 docker tag eshop/payment.api:linux-latest eshopmy01acr.azurecr.io/eshop/payment.api:linux-latest
