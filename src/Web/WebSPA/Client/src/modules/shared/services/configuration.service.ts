@@ -2,6 +2,7 @@
 import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
 import { IConfiguration }   from '../models/configuration.model';
 import { StorageService }   from './storage.service';
+import { environment } from '../../../environments/environment';
 
 import { Observable, Subject } from 'rxjs';
 
@@ -18,6 +19,11 @@ export class ConfigurationService {
     load() {
         const baseURI = document.baseURI.endsWith('/') ? document.baseURI : `${document.baseURI}/`;
         let url = `${baseURI}Home/Configuration`;
+
+        // if (!environment.production) {
+        //     url = `http://localhost:5104/Home/Configuration`;
+        // }
+
         this.http.get(url).subscribe((response) => {
             console.log('server settings loaded');
             this.serverSettings = response as IConfiguration;

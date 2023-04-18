@@ -19,6 +19,10 @@
     <section class="esh-identity-drop"
              *ngIf="authenticated">
 
+        <div class="esh-identity-item">
+           <div class="esh-identity-name">Benefit points: {{ 10 }}</div>
+        </div>
+
         <div class="esh-identity-item"
              [routerLink]="['orders']">
             <div class="esh-identity-name">My orders</div>
